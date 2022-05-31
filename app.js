@@ -1,25 +1,39 @@
 import fetch from "node-fetch";
+import "dotenv/config";
 
-fetch("http://oauth-pro-v2.corrigo.com/OAuth/Token", {
-   method: 'POST',
-   headers: {
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-   },
-   body: 'grant_type=client_credentials&client_id=B516137BD2FC0F25420603569E5031AC&client_secret=83C336CCEDDFCD646B2B06FF43970009C1392244E626E0260258B510C1F557E0F6FBFF84AF1766D648AF0FA6F50FE2AB05F994652EEDC55CE20FCA9429BCA275'
-   })
-   .then((response) => {
-      return response.json()
-   }).then((response) => {
-      const access_token = response.access_token;
+const client_id = process.env.client_id;
+const client_secret = process.env.client_secret;
+const grant_type = process.env.grant_type;
 
-      fetch("https://am-api.corrigopro.com/Direct/api/workOrder?messageId=fasfe&ids=16425336", {
-      method: 'GET',
-      headers: {
-         'Authorization': 'Bearer ' + access_token
-      }})
+const rest_service_url = process.env.rest_service_url;
+const oauth_server_url = process.env.oauth_server_url;
+
+// console.log(client_id, client_secret, grant_type, rest_service_url, oauth_server_url);
+
+fetch(oauth_server_url, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+  },
+  body: `grant_type=${grant_type}&client_id=${client_id}&client_secret=${client_secret}`,
+})
+  .then((response) => {
+    return response.json();
+  })
+  .then((response) => {
+    const access_token = response.access_token;
+
+    fetch(rest_service_url + "/api/workOrder?messageId=fdasfe&ids=16425336", {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }
+    )
       .then((response) => {
-         return response.json()
-      }).then((response) => {
-         console.log(response);
+        return response.json();
       })
-   })
+      .then((response) => {
+        console.log(response);
+      });
+  });
