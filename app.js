@@ -8,8 +8,6 @@ const grant_type = process.env.grant_type;
 const rest_service_url = process.env.rest_service_url;
 const oauth_server_url = process.env.oauth_server_url;
 
-// console.log(client_id, client_secret, grant_type, rest_service_url, oauth_server_url);
-
 fetch(oauth_server_url, {
   method: "POST",
   headers: {
