@@ -16,7 +16,7 @@ import {
   appointmentInfo,
   note,
   additionalField,
-} from "../utils/fetchingData.js";
+} from "../controllers/fetchingData.js";
 
 const router = express.Router();
 
