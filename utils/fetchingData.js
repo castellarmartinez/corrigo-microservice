@@ -49,4 +49,65 @@ const getWorkOrders = (access_token, ids) => {
     });
 };
 
-export { getToken, getWorkOrders };
+const getNoteHistory = (access_token, workOrderId) => {
+  return fetch(
+    rest_service_url +
+      `/api/workOrder/noteHistory?messageId=${messageId}&workOrderId=${workOrderId}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      return response;
+    });
+};
+
+const getAdditionalFieldHistory = (access_token, fields) => {
+  const { additionalFieldId, workOrderId } = fields;
+
+  return fetch(
+    rest_service_url +
+      `/api/workOrder/AdditionalFieldHistory?messageId=${messageId}` +
+      `&workOrderId=${workOrderId}&additionalFieldId=${additionalFieldId}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      return response;
+    });
+};
+
+const getIsmSettings = (access_token, workOrderId) => {
+ 
+   return fetch(
+     rest_service_url +
+       `/api/workOrder/IsmSettings?messageId=${messageId}&workOrderId=${workOrderId}`,
+     {
+       method: "GET",
+       headers: {
+         Authorization: "Bearer " + access_token,
+       },
+     }
+   )
+     .then((response) => {
+       return response.json();
+     })
+     .then((response) => {
+       return response;
+     });
+ };
+
+export { getToken, getWorkOrders, getNoteHistory, getAdditionalFieldHistory, getIsmSettings };
