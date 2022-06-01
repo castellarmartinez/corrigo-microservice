@@ -9,8 +9,6 @@ const grant_type = process.env.grant_type;
 const rest_service_url = process.env.rest_service_url;
 const oauth_server_url = process.env.oauth_server_url;
 
-const messageId = uuidv4();
-
 const getToken = fetch(oauth_server_url, {
   method: "POST",
   headers: {
@@ -33,7 +31,7 @@ const getWorkOrders = (access_token, ids) => {
   }
 
   return fetch(
-    rest_service_url + `/api/workOrder?messageId=${messageId}&${ids}`,
+    rest_service_url + `/api/workOrder?messageId=${uuidv4()}&${ids}`,
     {
       method: "GET",
       headers: {
@@ -52,7 +50,7 @@ const getWorkOrders = (access_token, ids) => {
 const getNoteHistory = (access_token, workOrderId) => {
   return fetch(
     rest_service_url +
-      `/api/workOrder/noteHistory?messageId=${messageId}&workOrderId=${workOrderId}`,
+      `/api/workOrder/noteHistory?messageId=${uuidv4()}&workOrderId=${workOrderId}`,
     {
       method: "GET",
       headers: {
@@ -73,7 +71,7 @@ const getAdditionalFieldHistory = (access_token, fields) => {
 
   return fetch(
     rest_service_url +
-      `/api/workOrder/AdditionalFieldHistory?messageId=${messageId}` +
+      `/api/workOrder/AdditionalFieldHistory?messageId=${uuidv4()}` +
       `&workOrderId=${workOrderId}&additionalFieldId=${additionalFieldId}`,
     {
       method: "GET",
@@ -91,23 +89,259 @@ const getAdditionalFieldHistory = (access_token, fields) => {
 };
 
 const getIsmSettings = (access_token, workOrderId) => {
- 
-   return fetch(
-     rest_service_url +
-       `/api/workOrder/IsmSettings?messageId=${messageId}&workOrderId=${workOrderId}`,
-     {
-       method: "GET",
-       headers: {
-         Authorization: "Bearer " + access_token,
-       },
-     }
-   )
-     .then((response) => {
-       return response.json();
-     })
-     .then((response) => {
-       return response;
-     });
- };
+  return fetch(
+    rest_service_url +
+      `/api/workOrder/IsmSettings?messageId=${uuidv4()}&workOrderId=${workOrderId}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      return response;
+    });
+};
 
-export { getToken, getWorkOrders, getNoteHistory, getAdditionalFieldHistory, getIsmSettings };
+const acceptOrder = (access_token, fields) => {
+   fields.MessageId = uuidv4();
+
+   return fetch(rest_service_url + `/api/workOrder/accept`, {
+    method: "PUT",
+    body: JSON.stringify(fields),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + access_token,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      return response;
+    });
+};
+
+const rejectOrder = (access_token, fields) => {
+   fields.MessageId = uuidv4();
+
+   return fetch(rest_service_url + `/api/workOrder/reject`, {
+    method: "PUT",
+    body: JSON.stringify(fields),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + access_token,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      return response;
+    });
+};
+
+const reopenOrder = (access_token, fields) => {
+   fields.MessageId = uuidv4();
+
+   return fetch(rest_service_url + `/api/workOrder/reopen`, {
+    method: "PUT",
+    body: JSON.stringify(fields),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + access_token,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      return response;
+    });
+};
+
+const quoteSubmit = (access_token, fields) => {
+   fields.MessageId = uuidv4();
+
+   return fetch(rest_service_url + `/api/workOrder/quoteSubmit`, {
+    method: "PUT",
+    body: JSON.stringify(fields),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + access_token,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      return response;
+    });
+};
+
+const checkInOrder = (access_token, fields) => {
+   fields.MessageId = uuidv4();
+
+   return fetch(rest_service_url + `/api/workOrder/checkIn`, {
+    method: "PUT",
+    body: JSON.stringify(fields),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + access_token,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      return response;
+    });
+};
+
+const pauseOrder = (access_token, fields) => {
+   fields.MessageId = uuidv4();
+
+   return fetch(rest_service_url + `/api/workOrder/pause`, {
+    method: "PUT",
+    body: JSON.stringify(fields),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + access_token,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      return response;
+    });
+};
+
+const checkOutOrder = (access_token, fields) => {
+   fields.MessageId = uuidv4();
+
+   return fetch(rest_service_url + `/api/workOrder/checkOut`, {
+    method: "PUT",
+    body: JSON.stringify(fields),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + access_token,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      return response;
+    });
+};
+
+const workDoneDetails = (access_token, fields) => {
+   fields.MessageId = uuidv4();
+
+   return fetch(rest_service_url + `/api/workOrder/workDoneDetails`, {
+    method: "PUT",
+    body: JSON.stringify(fields),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + access_token,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      return response;
+    });
+};
+
+const appointmentInfo = (access_token, fields) => {
+   fields.MessageId = uuidv4();
+
+   return fetch(rest_service_url + `/api/workOrder/appointmentInfo`, {
+    method: "PUT",
+    body: JSON.stringify(fields),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + access_token,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      return response;
+    });
+};
+
+const note = (access_token, fields) => {
+   fields.MessageId = uuidv4();
+
+   return fetch(rest_service_url + `/api/workOrder/note`, {
+    method: "PUT",
+    body: JSON.stringify(fields),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + access_token,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      return response;
+    });
+};
+
+const additionalField = (access_token, fields) => {
+   fields.MessageId = uuidv4();
+
+   return fetch(rest_service_url + `/api/workOrder/additionalField`, {
+    method: "PUT",
+    body: JSON.stringify(fields),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + access_token,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      return response;
+    });
+};
+
+export {
+  getToken,
+  getWorkOrders,
+  getNoteHistory,
+  getAdditionalFieldHistory,
+  getIsmSettings,
+  acceptOrder,
+  rejectOrder,
+  reopenOrder,
+  quoteSubmit,
+  checkInOrder,
+  pauseOrder,
+  checkOutOrder,
+  workDoneDetails,
+  appointmentInfo,
+  note,
+  additionalField,
+};
